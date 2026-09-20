@@ -10,3 +10,8 @@ Thumbs.db
 
 # Logs
 *.log
+# Ambiente de despliegue generado
+deploy/
+
+# Archivos temporales generados por extensiones de VS Code
+.github/modernize/

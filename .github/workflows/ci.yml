@@ -1,0 +1,44 @@
+name: CI - Inventario Automatizacion
+
+on:
+  push:
+    branches:
+      - main
+      - feature/inventario
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build
+        run: mvn -B clean compile
+
+      - name: Pruebas unitarias
+        run: mvn -B test
+
+      - name: Pruebas de integracion
+        run: mvn -B verify
+
+      - name: Guardar reportes de pruebas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reportes-pruebas
+          path: |
+            target/surefire-reports/
+            target/failsafe-reports/
